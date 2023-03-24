@@ -12,6 +12,7 @@ const navigation = [
   { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
   { name: "Leads", href: "#", icon: ChartBarIcon, current: false },
   { name: "Customers", href: "#", icon: UsersIcon, current: false },
+  { name: "Logout", href: "#", icon: UsersIcon, current: false },
 ];
 const userNavigation = [
   { name: "Your Profile", href: "#" },
