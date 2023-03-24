@@ -1,11 +1,19 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { PostApi } from "../services";
 
 function Register() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({});
 
-  const handleRegister = (event) => {
+  const handleRegister = async (event) => {
     event.preventDefault();
-    console.log(formData);
+    const endpoint = "register";
+    const datapost = await PostApi(formData, endpoint);
+    if (datapost.statusCode === 201) {
+      navigate("/login")
+    }
+    console.log(datapost)
   };
 
   return (
