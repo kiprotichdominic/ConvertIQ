@@ -1,10 +1,13 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 function Login() {
   const navigate = useNavigate()
+  const [formData, setFormData] = useState({});
   const handleLogin = (e) => {
     e.preventDefault();
     console.log("Submitted........");
-    navigate("/dashboard")
+    // navigate("/dashboard")
+    console.log(formData);
   };
   return (
     <div className="flex justify-center items-center h-screen">
@@ -24,6 +27,10 @@ function Login() {
               id="username"
               type="text"
               placeholder="Enter your username"
+              value={formData.username}
+              onChange={(e) =>
+                setFormData({ ...formData, username: e.target.value })
+              }
             />
           </div>
           <div className="mb-6">
@@ -37,6 +44,10 @@ function Login() {
               id="password"
               type="password"
               placeholder="Enter your password"
+              value={formData.password}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
             />
           </div>
           <div className="flex items-center justify-between">
