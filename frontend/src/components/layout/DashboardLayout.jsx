@@ -5,6 +5,7 @@ import {
   ChartBarIcon,
   HomeIcon,
   UsersIcon,
+  UserIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 
@@ -14,11 +15,7 @@ const navigation = [
   { name: "Customers", href: "#", icon: UsersIcon, current: false },
   { name: "Logout", href: "#", icon: UsersIcon, current: false },
 ];
-const userNavigation = [
-  { name: "Your Profile", href: "#" },
-  { name: "Settings", href: "#" },
-  { name: "Sign out", href: "#" },
-];
+const userNavigation = [{ name: "Sign out", href: "#" }];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -122,7 +119,9 @@ function DashboardLayout({ children }) {
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex flex-grow flex-col overflow-y-auto border-r border-gray-200 bg-white pt-5">
             <div className="flex flex-shrink-0 items-center px-4">
-              <h1 className="text-2xl font-semibold text-gray-900 ml-5">ConvertIQ</h1>
+              <h1 className="text-2xl font-semibold text-gray-900 ml-5">
+                ConvertIQ
+              </h1>
             </div>
             <div className="mt-5 flex flex-grow flex-col">
               <nav className="flex-1 space-y-1 px-2 pb-4">
@@ -169,11 +168,7 @@ function DashboardLayout({ children }) {
                   <div>
                     <Menu.Button className="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                       <span className="sr-only">Open user menu</span>
-                      <img
-                        className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt=""
-                      />
+                      <UserIcon className="h-8 w-8 rounded-full" />
                     </Menu.Button>
                   </div>
                   <Transition
@@ -209,9 +204,7 @@ function DashboardLayout({ children }) {
           <main className="flex-1">
             <div className="py-6">
               <div className="mx-auto max-w-full px-4 sm:px-6 lg:px-8">
-                <h1 className="text-2xl font-semibold text-gray-900">
-
-                </h1>
+                <h1 className="text-2xl font-semibold text-gray-900"></h1>
               </div>
               <div className="mx-auto max-w-full px-4 sm:px-6 lg:px-8">
                 {children}
