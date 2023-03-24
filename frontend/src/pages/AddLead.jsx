@@ -1,11 +1,27 @@
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import DashboardLayout from "../components/layout/DashboardLayout";
+import { PostApi } from "../services";
 
 function AddLead() {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({});
+  const handleAddLead = async (event) => {
+    event.preventDefault();
+    const date = new Date()
+    console.log(formData);
+    const endpoint = "leads/create/";
+    const datapost = await PostApi(formData, endpoint);
+    console.log(datapost.created_at);
+    if (datapost.created_at) {
+      navigate("/dashboard");
+    }
+  };
   return (
     <DashboardLayout>
-      <form>
+      <form onSubmit={handleAddLead}>
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
             <h2 className="text-base font-semibold leading-7 text-gray-900">
@@ -18,50 +34,62 @@ function AddLead() {
             <div className="mt-10 grid grid-cols-1 gap-y-8 gap-x-6 sm:grid-cols-6">
               <div className="sm:col-span-2">
                 <label
-                  htmlFor="first-name"
+                  htmlFor="first_name"
                   className="block text-sm font-medium leading-6 text-gray-900">
                   First name
                 </label>
                 <div className="mt-2">
                   <input
                     type="text"
-                    name="first-name"
-                    id="first-name"
-                    autoComplete="given-name"
+                    name="first_name"
+                    id="first_name"
+                    placeholder="e.g John"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    value={formData.first_name}
+                    onChange={(e) =>
+                      setFormData({ ...formData, first_name: e.target.value })
+                    }
                   />
                 </div>
               </div>
 
               <div className="sm:col-span-2">
                 <label
-                  htmlFor="middle-name"
+                  htmlFor="middle_name"
                   className="block text-sm font-medium leading-6 text-gray-900">
                   Middle Name
                 </label>
                 <div className="mt-2">
                   <input
                     type="text"
-                    name="middle-name"
-                    id="middle-name"
-                    autoComplete="family-name"
+                    name="middle_name"
+                    id="middle_name"
+                    placeholder="e.g Waititu"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    value={formData.middle_name}
+                    onChange={(e) =>
+                      setFormData({ ...formData, middle_name: e.target.value })
+                    }
                   />
                 </div>
               </div>
               <div className="sm:col-span-2">
                 <label
-                  htmlFor="last-name"
+                  htmlFor="last_name"
                   className="block text-sm font-medium leading-6 text-gray-900">
                   Last Name
                 </label>
                 <div className="mt-2">
                   <input
                     type="text"
-                    name="last-name"
-                    id="last-name"
-                    autoComplete="family-name"
+                    name="last_name"
+                    id="last_name"
+                    placeholder="e.g Doe"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    value={formData.last_name}
+                    onChange={(e) =>
+                      setFormData({ ...formData, last_name: e.target.value })
+                    }
                   />
                 </div>
               </div>
@@ -77,9 +105,13 @@ function AddLead() {
                   <input
                     type="text"
                     name="phone_number"
+                    placeholder="e.g. 0712345678"
                     id="phone_number"
-                    autoComplete="given-name"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    value={formData.phone_number}
+                    onChange={(e) =>
+                      setFormData({ ...formData, phone_number: e.target.value })
+                    }
                   />
                 </div>
               </div>
@@ -95,8 +127,12 @@ function AddLead() {
                     type="text"
                     name="location"
                     id="location"
-                    autoComplete="family-name"
+                    placeholder="e.g. Nairobi"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    value={formData.location}
+                    onChange={(e) =>
+                      setFormData({ ...formData, location: e.target.value })
+                    }
                   />
                 </div>
               </div>
@@ -107,13 +143,19 @@ function AddLead() {
                   Gender
                 </label>
                 <div className="mt-2">
-                  <input
-                    type="text"
-                    name="gender"
+                  <select
                     id="gender"
-                    autoComplete="family-name"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
+                    name="gender"
+                    autoComplete="gender"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                    onChange={(e) =>
+                      setFormData({ ...formData, gender: e.target.value })
+                    }>
+                    <option>Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="">Prefer Not To Say</option>
+                  </select>
                 </div>
               </div>
             </div>
