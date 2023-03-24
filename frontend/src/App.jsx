@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import jwt_decode from "jwt-decode";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import { Customers, Dashboard, Home, Login, Register } from "./pages";
+import { AddLead, Customers, Dashboard, Home, Login, Register } from "./pages";
 
 function App() {
   useEffect(() => {
@@ -18,6 +18,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/addlead" element={<AddLead />} />
       <Route path="/customers" element={<Customers />} />
     </Routes>
   );
