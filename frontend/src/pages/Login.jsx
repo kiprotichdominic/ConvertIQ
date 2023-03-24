@@ -2,16 +2,17 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PostApi } from "../services";
 function Login() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({});
   const handleLogin = async (event) => {
     event.preventDefault();
-    const endpoint = "login";
+    const endpoint = "token/login";
     const datapost = await PostApi(formData, endpoint);
-    if (datapost.statusCode === 200) {
-      navigate("/dashboard")
+    console.log(datapost.access);
+    if (datapost.access) {
+      navigate("/dashboard");
+      localStorage.setItem("access", datapost.access);
     }
-    console.log(datapost)
   };
   return (
     <div className="flex justify-center items-center h-screen">
@@ -19,7 +20,9 @@ function Login() {
         <form
           className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-96 h-auto"
           onSubmit={handleLogin}>
-          <h2 className="text-2xl font-bold mb-4 text-center">ConvertIQ Login</h2>
+          <h2 className="text-2xl font-bold mb-4 text-center">
+            ConvertIQ Login
+          </h2>
           <div className="mb-4">
             <label
               className="block text-gray-700 font-bold mb-2"

@@ -13,13 +13,12 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             'email',
             'password',
             'username'
-
         )
 
     def create(self, validated_data):
         user = User.objects.create(
             email=validated_data['email'],
-            password=validated_data ['password'],
+            password=validated_data['password'],
             username=validated_data['username']
 
             # first_name=validated_data['first_name'],
@@ -29,12 +28,8 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
-# from rest_framework import serializers
-# from rest_framework_simplejwt.tokens import RefreshToken
-
-
 class UserLoginSerializer(serializers.Serializer):
-    
+
     email = serializers.EmailField()
     password = serializers.CharField(max_length=128, write_only=True)
     access = serializers.CharField(read_only=True)
@@ -57,6 +52,11 @@ class UserLoginSerializer(serializers.Serializer):
             user.last_login = timezone.now()
             user.save()
 
+            payload = {
+                'email': user.email,
+                'role': user.role
+            }
+
             validation = {
                 'access': access_token,
                 'refresh': refresh_token,
@@ -64,10 +64,15 @@ class UserLoginSerializer(serializers.Serializer):
                 'role': user.role,
             }
 
+            access_token = refresh.access_token
+            access_token.payload = payload
+
             return validation
         except User.DoesNotExist:
             raise serializers.ValidationError("Invalid login credentials")
-        
+
+
+
 class UserListSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

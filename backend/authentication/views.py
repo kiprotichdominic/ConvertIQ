@@ -2,6 +2,9 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework_simplejwt.views import TokenObtainPairView
+from .tokengenerator import CustomTokenObtainPairSerializer
+
 
 from .serializers import (
     UserRegistrationSerializer,
@@ -10,6 +13,14 @@ from .serializers import (
 )
 
 from .models import User
+
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+        return response
 
 
 class AuthUserRegistrationView(APIView):
@@ -32,7 +43,7 @@ class AuthUserRegistrationView(APIView):
             }
 
             return Response(response, status=status_code)
-        
+
 
 class AuthUserLoginView(APIView):
     serializer_class = UserLoginSerializer
@@ -52,12 +63,13 @@ class AuthUserLoginView(APIView):
                 'access': serializer.data['access'],
                 'refresh': serializer.data['refresh'],
                 'authenticatedUser': {
-                'email': serializer.data['email'],
-                'role': serializer.data['role']
+                    'email': serializer.data['email'],
+                    'role': serializer.data['role']
                 }
             }
 
             return Response(response, status=status_code)
+
 
 class UserListView(APIView):
     serializer_class = UserListSerializer
@@ -74,7 +86,7 @@ class UserListView(APIView):
                 'message': 'You are not authorized to perform this action'
             }
             return Response(response, status.HTTP_403_FORBIDDEN)
-        
+
         else:
 
             users = User.objects.all()

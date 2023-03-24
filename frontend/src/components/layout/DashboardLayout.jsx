@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import {
   Bars3BottomLeftIcon,
@@ -8,11 +8,10 @@ import {
   UserIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-
+import jwt_decode from "jwt-decode";
 const navigation = [
-  { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
-  { name: "Leads", href: "#", icon: ChartBarIcon, current: false },
-  { name: "Customers", href: "#", icon: UsersIcon, current: false },
+  { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
+  { name: "Customers", href: "/customers", icon: UsersIcon, current: false },
   { name: "Logout", href: "#", icon: UsersIcon, current: false },
 ];
 const userNavigation = [{ name: "Sign out", href: "#" }];
@@ -23,6 +22,17 @@ function classNames(...classes) {
 
 function DashboardLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [userRole, setUserRole] = useState();
+  useEffect(() => {
+    const token = localStorage.getItem("access");
+    let decoded = jwt_decode(token);
+    setUserRole(decoded.role)
+    console.log(decoded.role);
+  }, []);
+
+  const filteredNavigation = navigation.filter(
+    (item) => item.name !== "Customers" || userRole !== 2
+  );
 
   return (
     <>
@@ -80,8 +90,8 @@ function DashboardLayout({ children }) {
                     </h1>
                   </div>
                   <div className="mt-5 h-0 flex-1 overflow-y-auto">
-                    <nav className="space-y-1 px-2">
-                      {navigation.map((item) => (
+                    <nav className="flex-1 space-y-1 px-2 pb-4">
+                      {filteredNavigation.map((item) => (
                         <a
                           key={item.name}
                           href={item.href}
@@ -89,7 +99,7 @@ function DashboardLayout({ children }) {
                             item.current
                               ? "bg-gray-100 text-gray-900"
                               : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
-                            "group flex items-center rounded-md px-2 py-2 text-base font-medium"
+                            "group flex items-center rounded-md px-2 py-2 text-sm font-medium"
                           )}>
                           <item.icon
                             className={classNames(
