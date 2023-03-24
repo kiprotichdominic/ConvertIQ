@@ -1,13 +1,17 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { PostApi } from "../services";
 function Login() {
   const navigate = useNavigate()
   const [formData, setFormData] = useState({});
-  const handleLogin = (e) => {
-    e.preventDefault();
-    console.log("Submitted........");
-    // navigate("/dashboard")
-    console.log(formData);
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    const endpoint = "login";
+    const datapost = await PostApi(formData, endpoint);
+    if (datapost.statusCode === 200) {
+      navigate("/dashboard")
+    }
+    console.log(datapost)
   };
   return (
     <div className="flex justify-center items-center h-screen">
@@ -19,17 +23,17 @@ function Login() {
           <div className="mb-4">
             <label
               className="block text-gray-700 font-bold mb-2"
-              htmlFor="username">
-              Username
+              htmlFor="email">
+              Email
             </label>
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="username"
+              id="email"
               type="text"
-              placeholder="Enter your username"
-              value={formData.username}
+              placeholder="Enter your email"
+              value={formData.email}
               onChange={(e) =>
-                setFormData({ ...formData, username: e.target.value })
+                setFormData({ ...formData, email: e.target.value })
               }
             />
           </div>
