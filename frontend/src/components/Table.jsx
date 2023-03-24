@@ -1,12 +1,27 @@
-const people = [
-  {
-    name: "Lindsay Walton",
-    title: "Front-end Developer",
-    email: "lindsay.walton@example.com",
-    role: "Member",
-  },
-];
+import { useEffect, useState } from "react";
+import { FetchData } from "../services";
+
 function Table() {
+  const [leads, setLeads] = useState([]);
+  useEffect(() => {
+    (async () => {
+      const endpoint = "leads/list/";
+      const data = await FetchData(endpoint);
+      // console.log(data);
+      if (data) {
+        console.log("we have data");
+        setLeads(data);
+        console.log(leads);
+      }
+    })();
+  }, []);
+
+  const convertDate = (date_to_convert) => {
+    const dateObj = new Date(date_to_convert);
+    const formattedDate = dateObj.toLocaleString(); // change format as per your requirement
+    return formattedDate;
+  };
+
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
@@ -40,46 +55,62 @@ function Table() {
                     <th
                       scope="col"
                       className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                      Title
+                      Gender
                     </th>
                     <th
                       scope="col"
                       className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                      Email
+                      Location
                     </th>
                     <th
                       scope="col"
                       className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                      Role
+                      Phone Number
                     </th>
                     <th
                       scope="col"
-                      className="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                      <span className="sr-only">Edit</span>
+                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                      Added On
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                      Added By
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                      Actions
                     </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {people.map((person) => (
-                    <tr key={person.email}>
+                  {leads?.map((lead) => (
+                    <tr key={lead.id}>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                        {person.name}
+                        {lead.first_name} {lead.middle_name} {lead.last_name}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.title}
+                        {lead.gender}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.email}
+                        {lead.location}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.role}
+                        {lead.phone_number}
+                      </td>
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        {convertDate(lead.created_at)}
+                      </td>
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        {lead.created_by}
                       </td>
                       <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                        <a
-                          href="#"
-                          className="text-indigo-600 hover:text-indigo-900">
-                          Edit<span className="sr-only">, {person.name}</span>
-                        </a>
+                        <button
+                          type="button"
+                          className="block rounded-md bg-indigo-600 py-2 px-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                          Convert To Customer
+                        </button>
                       </td>
                     </tr>
                   ))}
