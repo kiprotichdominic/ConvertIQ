@@ -8,6 +8,10 @@ ConvertIQ helps you convert more leads by using intelligent lead scoring to iden
 
 - [**Kiprotich Dominic**](https://github.com/kiprotichdominic)
 
+## Admin User
+ - Email: k@mail.com
+ - Password: 1
+
 ## Features
 
 As a user of the web application you will be able to:
