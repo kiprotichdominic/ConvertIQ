@@ -10,6 +10,7 @@ ConvertIQ helps you convert more leads by using intelligent lead scoring to iden
 
 ## Admin User
  - Email: k@mail.com
+ - Username: k
  - Password: 1
 
 ## Features
